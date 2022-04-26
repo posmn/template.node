@@ -1,0 +1,147 @@
+name: Release - Package app
+
+# Controls when the workflow will run
+on:
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+    inputs:
+      fullName:
+        description: 'Full Name'
+        required: true
+        default: 'Ultra Clear'
+      name:
+        description: 'Name (lowercase)'
+        required: true
+        default: 'ultraclear'
+      ticker:
+        description: 'Ticker (lowercase)'
+        required: true
+        default: 'ucr'
+      binaryVersion:
+        description: 'Binary Version'
+        required: true
+        default: '3.0.1.1'
+      daemonUrl:
+        description: 'Daemon URL'
+        required: true
+        default: 'https://github.com/ucrcoin/UCR/releases/download/v3.0.1.1/UCR-3.0.1.1-Linux.zip'
+      daemonName:
+        description: 'Daemon Name'
+        required: true
+        default: 'ultracleard'
+      cliName:
+        description: 'CLI Name'
+        required: true
+        default: 'ultraclear-cli'
+      confName:
+        description: 'Conf Name'
+        required: true
+        default: 'ultraclear.conf'
+      website:
+        description: 'Website'
+        required: true
+        default: 'https://ucrcoin.net/'
+      explorer:
+        description: 'Explorer'
+        required: true
+        default: 'https://explorer.decenomy.net/UCR/blocks'
+        
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Find and Replace
+        uses: jacobtomlinson/gha-find-replace@v2
+        with:
+          find: "[[FULL_NAME]]"
+          replace: "${{ github.event.inputs.fullName }}"
+          exclude: ".github/**"
+          
+      - name: Find and Replace
+        uses: jacobtomlinson/gha-find-replace@v2
+        with:
+          find: "[[NAME]]"
+          replace: "${{ github.event.inputs.name }}"
+          exclude: ".github/**"
+
+      - name: Find and Replace
+        uses: jacobtomlinson/gha-find-replace@v2
+        with:
+          find: "[[TICKER]]"
+          replace: "${{ github.event.inputs.ticker }}"
+          exclude: ".github/**"
+
+      - name: Find and Replace
+        uses: jacobtomlinson/gha-find-replace@v2
+        with:
+          find: "[[BINARY_VERSION]]"
+          replace: "${{ github.event.inputs.binaryVersion }}"
+          exclude: ".github/**"
+
+      - name: Find and Replace
+        uses: jacobtomlinson/gha-find-replace@v2
+        with:
+          find: "[[DAEMON_URL]]"
+          replace: "${{ github.event.inputs.daemonUrl }}"
+          exclude: ".github/**"
+
+      - name: Find and Replace
+        uses: jacobtomlinson/gha-find-replace@v2
+        with:
+          find: "[[DAEMON_NAME]]"
+          replace: "${{ github.event.inputs.daemonName }}"
+          exclude: ".github/**"
+
+      - name: Find and Replace
+        uses: jacobtomlinson/gha-find-replace@v2
+        with:
+          find: "[[CLI_NAME]]"
+          replace: "${{ github.event.inputs.cliName }}"
+          exclude: ".github/**"
+
+      - name: Find and Replace
+        uses: jacobtomlinson/gha-find-replace@v2
+        with:
+          find: "[[CONF_NAME]]"
+          replace: "${{ github.event.inputs.confName }}"
+          exclude: ".github/**"
+
+      - name: Find and Replace
+        uses: jacobtomlinson/gha-find-replace@v2
+        with:
+          find: "[[WEBSITE]]"
+          replace: "${{ github.event.inputs.website }}"
+          exclude: ".github/**"
+
+      - name: Find and Replace
+        uses: jacobtomlinson/gha-find-replace@v2
+        with:
+          find: "[[EXPLORER]]"
+          replace: "${{ github.event.inputs.explorer }}"
+          exclude: ".github/**"
+
+      - name: Remove superfluous workflow
+        uses: JesseTG/rm@v1.0.2
+        with:
+          path: /.github/workflows/create-app.yml
+
+      - name: Creating Repository
+        uses: repo-ctrl/create-repo-action@main 
+        id: create-repo
+        with:
+          repo-name: '${{ github.event.inputs.ticker }}.node'
+          org-admin-token: '${{ secrets.REPO_ACCESS_TOKEN }}'
+
+      - name: Pushes to the new repository
+        uses: cpina/github-action-push-to-another-repository@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.REPO_ACCESS_TOKEN }}
+        with:
+          source-directory: '/'
+          destination-github-username: 'posmn'
+          destination-repository-name: '${{ github.event.inputs.ticker }}.node'
+          user-email: info@posmn.com
+          target-branch: master
