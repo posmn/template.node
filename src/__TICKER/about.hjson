@@ -1,0 +1,10 @@
+{
+    "Description": '''
+[[FULL_NAME]] masternode'''
+    Links: [
+        { 
+            website: "[[WEBSITE]]",
+            explorer: "[[EXPLORER]]"
+        }
+    ]
+}

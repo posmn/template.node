@@ -1,0 +1,7 @@
+{
+    "id": "posmn.[[TICKER]].node" ,
+    "version" : "0.0.1+[[BINARY_VERSION]]",
+    "dependencies": [
+        { "id":"btc.base" }
+    ]
+}
