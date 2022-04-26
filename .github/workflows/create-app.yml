@@ -128,20 +128,7 @@ jobs:
         with:
           path: /.github/workflows/create-app.yml
 
-      - name: Creating Repository
-        uses: repo-ctrl/create-repo-action@main 
-        id: create-repo
-        with:
-          repo-name: '${{ github.event.inputs.ticker }}.node'
-          org-admin-token: '${{ secrets.REPO_ACCESS_TOKEN }}'
-
-      - name: Pushes to the new repository
-        uses: cpina/github-action-push-to-another-repository@main
+      - run: gh repo create $REPO_NAME --public --source=. --remote=upstream
         env:
-          API_TOKEN_GITHUB: ${{ secrets.REPO_ACCESS_TOKEN }}
-        with:
-          source-directory: '/'
-          destination-github-username: 'posmn'
-          destination-repository-name: '${{ github.event.inputs.ticker }}.node'
-          user-email: info@posmn.com
-          target-branch: master
+          GITHUB_TOKEN: ${{ secrets.REPO_ACCESS_TOKEN }}
+          REPO_NAME: 'posmn/${{ github.event.inputs.ticker }}.node'
