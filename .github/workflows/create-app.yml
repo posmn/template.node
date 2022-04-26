@@ -132,3 +132,5 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.REPO_ACCESS_TOKEN }}
           REPO_NAME: 'posmn/${{ github.event.inputs.ticker }}.node'
+
+      - run: git push origin master
