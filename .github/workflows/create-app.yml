@@ -1,4 +1,4 @@
-name: Release - Package app
+name: Create new app
 
 # Controls when the workflow will run
 on:
