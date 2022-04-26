@@ -134,3 +134,5 @@ jobs:
           REPO_NAME: 'posmn/${{ github.event.inputs.ticker }}.node'
 
       - run: git push upstream master
+        with:
+          github_token: ${{ secrets.REPO_ACCESS_TOKEN }}
