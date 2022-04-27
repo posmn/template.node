@@ -138,6 +138,10 @@ jobs:
         with:
           path: .github/workflows/create-app.yml
 
+      - run: mv src/__TICKER src/__$TICKER
+        env:
+          TICKER: ${{ github.event.inputs.ticker }}
+
       - run: rm -rf .git
 
       - run: gh repo create $REPO_NAME --public
