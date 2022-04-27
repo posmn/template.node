@@ -133,6 +133,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.REPO_ACCESS_TOKEN }}
           REPO_NAME: 'posmn/${{ github.event.inputs.ticker }}.node'
 
-      - run: git push -u upstream master
+      - run: |
+          git config --unset-all http.https://github.com/.extraheader
+          git push -u upstream master
         env:
           GITHUB_TOKEN: ${{ secrets.REPO_ACCESS_TOKEN }}
