@@ -128,7 +128,9 @@ jobs:
         with:
           path: /.github/workflows/create-app.yml
 
-      - run: gh repo create $REPO_NAME --public --source=. --remote=upstream
+      - run: rm -rf .git
+
+      - run: gh repo create $REPO_NAME --public
         env:
           GITHUB_TOKEN: ${{ secrets.REPO_ACCESS_TOKEN }}
           REPO_NAME: 'posmn/${{ github.event.inputs.ticker }}.node'
@@ -137,6 +139,8 @@ jobs:
           git config --unset-all http.https://github.com/.extraheader
           git config --local user.name "github-actions[bot]"
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
-          git push -u upstream master
+          git add -A
+          git commit -m "Created app"
+          git push  https://github-actions[bot]:$REPO_KEY@github.com/posmn/${{ github.event.inputs.ticker }}.node.git
         env:
-          GITHUB_TOKEN: ${{ secrets.REPO_ACCESS_TOKEN }}
+          REPO_KEY: ${{ secrets.REPO_ACCESS_TOKEN }}
