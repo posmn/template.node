@@ -151,7 +151,7 @@ jobs:
 
       - run: gh secret set REPO_ACCESS_TOKEN --body "$APP_REPO_TOKEN" --repo $REPO_NAME
         env:
-          APP_REPO_TOKEN: ${{ secret.APP_REPO_TOKEN }}
+          APP_REPO_TOKEN: ${{ secrets.APP_REPO_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.REPO_ACCESS_TOKEN }}
           REPO_NAME: 'posmn/${{ github.event.inputs.ticker }}.node'
 
